@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use app\models\Signup;
+use app\models\login;
 use Yii;
 use yii\web\Controller;
 
@@ -29,6 +30,13 @@ class SiteController extends Controller
 
         return $this->render('signup', [
             'model' => $model
+        ]);
+    }
+
+    public function actionLogin(){
+        $login_model = new Login();
+        return $this->render('login', [
+            'login_model' => $login_model
         ]);
     }
 }
