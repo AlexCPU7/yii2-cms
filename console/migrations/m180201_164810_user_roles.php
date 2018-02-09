@@ -9,7 +9,7 @@ class m180201_164810_user_roles extends Migration
         $this->addForeignKey(
             'fk-user-roles',
             'user',
-            'status',
+            'role',
             'roles',
             'id',
             'CASCADE'

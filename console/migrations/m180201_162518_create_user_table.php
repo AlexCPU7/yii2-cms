@@ -12,7 +12,7 @@ class m180201_162518_create_user_table extends Migration
             'login' => $this->string(100)->notNull(),
             'password_hash' => $this->string(100)->notNull(),
             'email' => $this->string(100)->notNull(),
-            'status' => $this->integer(),
+            'role' => $this->integer(),
         ]);
 
         $this->createTable('roles', [

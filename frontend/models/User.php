@@ -9,13 +9,12 @@ use Yii;
  *
  * @property integer $id
  * @property string $username
- * @property string $auth_key
+ * @property string $login
  * @property string $password_hash
- * @property string $password_reset_token
  * @property string $email
- * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
+ * @property integer $role
+ *
+ * @property Roles $role0
  */
 class User extends \yii\db\ActiveRecord
 {
@@ -33,13 +32,10 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'auth_key', 'password_hash', 'email', 'created_at', 'updated_at'], 'required'],
-            [['status', 'created_at', 'updated_at'], 'integer'],
-            [['username', 'password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
-            [['auth_key'], 'string', 'max' => 32],
-            [['username'], 'unique'],
-            [['email'], 'unique'],
-            [['password_reset_token'], 'unique'],
+            [['username', 'login', 'password_hash', 'email'], 'required'],
+            [['role'], 'integer'],
+            [['username', 'login', 'password_hash', 'email'], 'string', 'max' => 100],
+            [['role'], 'exist', 'skipOnError' => true, 'targetClass' => Roles::className(), 'targetAttribute' => ['role' => 'id']],
         ];
     }
 
@@ -51,13 +47,21 @@ class User extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'username' => 'Username',
-            'auth_key' => 'Auth Key',
+            'login' => 'Login',
             'password_hash' => 'Password Hash',
-            'password_reset_token' => 'Password Reset Token',
             'email' => 'Email',
-            'status' => 'Status',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'role' => 'Role',
         ];
+    }
+
+    public function setPassword_hash($password_hash){
+        $this->password_hash = sha1($password_hash);
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRole0()
+    {
+        return $this->hasOne(Roles::className(), ['id' => 'role']);
     }
 }
