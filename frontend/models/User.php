@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\web\IdentityInterface;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "user".
@@ -16,7 +18,7 @@ use Yii;
  *
  * @property Roles $role0
  */
-class User extends \yii\db\ActiveRecord
+class User extends ActiveRecord implements IdentityInterface
 {
     /**
      * @inheritdoc
@@ -57,11 +59,29 @@ class User extends \yii\db\ActiveRecord
     public function setPassword_hash($password_hash){
         $this->password_hash = sha1($password_hash);
     }
-    /**
-     * @return \yii\db\ActiveQuery
-     */
+
+    public function validatePassword($password){
+        return $this->password_hash === sha1($password);
+    }
+
     public function getRole0()
     {
         return $this->hasOne(Roles::className(), ['id' => 'role']);
     }
+
+    //=====================================
+    public static function findIdentity($id){
+        return self::findOne($id);
+    }
+
+    public function getId(){
+        return $this->id;
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null){}
+
+    public function getAuthKey(){}
+
+    public function validateAuthKey($authKey){}
+
 }
