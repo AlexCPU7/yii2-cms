@@ -16,7 +16,7 @@ class Signup extends Model {
             [['username', 'login', 'password_hash', 'email'], 'required'],
             ['email', 'email'],
             [['login', 'email'], 'unique', 'targetClass'=>'app\models\User'],
-            ['password_hash', 'string', 'min'=>6, 'max'=>20]
+            ['password_hash', 'string', 'min'=>5, 'max'=>20]
         ];
     }
 
@@ -24,7 +24,7 @@ class Signup extends Model {
         return [
             'username' => 'Имя',
             'login' => 'Логин',
-            'password' => 'Пароль',
+            'password_hash' => 'Пароль',
             'email' => 'Электронная почта',
             //'date' => 'Дата',
         ];
