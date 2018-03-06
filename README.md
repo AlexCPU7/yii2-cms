@@ -6,7 +6,7 @@
  a)создаём бд "yii2-cms";
  b)изменяем подключение к базе дыннх в конфигах(common/config/main-colal) на 'dsn' => 'mysql:host=localhost;dbname=yii2-cms';
 3) Пишем в консоли yii migrate.
-
+   
 Настройки сервера:
 Nginx-1.10
 PHP 7.0 x64
