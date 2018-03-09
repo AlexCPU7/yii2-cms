@@ -15,6 +15,7 @@ use yii\db\ActiveRecord;
  * @property string $password_hash
  * @property string $email
  * @property integer $role
+ * @property integer $status
  *
  * @property Roles $role0
  */

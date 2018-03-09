@@ -5,9 +5,11 @@
 2) Настраиваем базу данных:
  a)создаём бд "yii2-cms";
  b)изменяем подключение к базе дыннх в конфигах(common/config/main-colal) на 'dsn' => 'mysql:host=localhost;dbname=yii2-cms';
-3) Пишем в консоли yii migrate.
+3) Пишем в консоли yii migrate и соглащаемся;
+4) Открываем консоль и прописываем "yii start-authentication".
+
    
 Настройки сервера:
-Nginx-1.10
-PHP 7.0 x64
-MySQL 5.7 x64
+- Nginx-1.10
+- PHP 7.0 x64
+- MySQL 5.7 x64

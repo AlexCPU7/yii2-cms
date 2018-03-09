@@ -37,6 +37,7 @@ class Signup extends Model {
         $user->setPassword_hash($this->password_hash);
         $user->email = $this->email;
         $user->role = 2;
+        $user->status = 10;
         return $user->save();
 
     }
