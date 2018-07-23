@@ -17,7 +17,14 @@
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.6",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0"
+        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
+        "mihaildev/yii2-ckeditor": "*",
+        "kartik-v/yii2-widget-fileinput": "@dev",
+        "kotchuprik/yii2-sortable-widgets": "*",
+        "metalguardian/yii2-fotorama-widget": "^1.0",
+        "kartik-v/yii2-slider": "*",
+        "dmstr/yii2-adminlte-asset": "^2.1",
+        "voskobovich/yii2-many-many-behavior": "^3.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
@@ -27,7 +34,10 @@
         "codeception/verify": "~0.3.1"
     },
     "config": {
-        "process-timeout": 1800
+        "process-timeout": 1800,
+        "fxp-asset": {
+            "enabled": false
+        }
     },
     "repositories": [
         {

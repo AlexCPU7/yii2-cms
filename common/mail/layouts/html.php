@@ -1,9 +1,11 @@
 <?php
 use yii\helpers\Html;
+use common\models\InfoSite;
 
 /* @var $this \yii\web\View view component instance */
 /* @var $message \yii\mail\MessageInterface the message being composed */
 /* @var $content string main view render result */
+$model = InfoSite::findOne(1);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -15,7 +17,11 @@ use yii\helpers\Html;
 </head>
 <body>
     <?php $this->beginBody() ?>
-    <?= $content ?>
+        <p><h1><?= $model->title ?></h1></p>
+        <p><?= $content ?></p>
+        <p>© <?= $model->title ?> <?= date('Y') ?></p>
+        <p>Телефон: <?= $model->letter_phone ?></p>
+        <p style="color:#9db7ff">Почта: <?= $model->letter_email ?></p>
     <?php $this->endBody() ?>
 </body>
 </html>

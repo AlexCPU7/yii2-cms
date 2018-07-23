@@ -9,6 +9,8 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
+use frontend\widget\AdminPanel;
+use yii\helpers\Url;
 
 AppAsset::register($this);
 ?>
@@ -24,60 +26,79 @@ AppAsset::register($this);
     <?php $this->head() ?>
 </head>
 <body>
-<?php $this->beginBody() ?>
+    <?php if (!Yii::$app->user->can('ban')){ ?>
+        <?php $this->beginBody() ?>
+        <?= AdminPanel::widget(); ?>
+        <div class="wrap">
+            <?php
+            NavBar::begin([
+                'brandLabel' => Yii::$app->name,
+                'brandUrl' => '/',
+                'options' => [
+                    'class' => 'navbar-inverse',
+                ],
+            ]);
+            $menuItems = [
+                ['label' => 'Главная', 'url' => ['/site/index']],
+            ];
+            if (Yii::$app->user->isGuest) {
+                $menuItems[] = ['label' => 'Регистрация', 'url' => ['/site/signup']];
+                $menuItems[] = ['label' => 'Войти', 'url' => ['/site/login']];
+            } else {
+                $menuItems[] = ['label' => Yii::$app->user->identity->email, 'items' => [
+                    ['label' => 'Профиль', 'url' => ['/user/profile']],
+                    ['label' => 'Настройки', 'url' => ['/user/settings']],
+                    '<li>'
+                    . Html::beginForm(['/site/logout'], 'post')
+                    . Html::submitButton(
+                        'Выйти',
+                        ['class' => 'menu-exit']
+                    )
+                    . Html::endForm()
+                    . '</li>'
+                ]];
+            }
+            echo Nav::widget([
+                'options' => ['class' => 'navbar-nav navbar-right'],
+                'items' => $menuItems,
+            ]);
+            NavBar::end();
+            ?>
 
-<div class="wrap">
-    <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    $menuItems = [
-        //['label' => 'Home', 'url' => ['/site/index']],
-        //['label' => 'About', 'url' => ['/site/about']],
-        //['label' => 'Contact', 'url' => ['/site/contact']],
-    ];
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Войти', 'url' => ['/site/login']];
-        $menuItems[] = ['label' => 'Регистрация', 'url' => ['/site/signup']];
-    } else {
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
-    }
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $menuItems,
-    ]);
-    NavBar::end();
-    ?>
+            <div class="container">
+                <?= Breadcrumbs::widget([
+                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                ]) ?>
+                <?= Alert::widget() ?>
+                <?= $content ?>
+            </div>
+        </div>
 
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
-    </div>
-</div>
+        <footer class="footer">
+            <div class="container">
+                <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
+            </div>
+        </footer>
 
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
+    <?php }else{ ?>
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
-    </div>
-</footer>
+        <div class="ban-fon">
+            <div class="ban-contend">
+                <div class="ban-text">
+                    <h2>Вы были забанены, свяжитесь с администратором!</h2>
+                    <form action="<?= Url::to(['/site/logout']); ?>" method="post">
+                        <input type="hidden" name="_csrf-frontend" value="IAuTD3kiZhigDYINZiLbpA8LMvYiqD-SZYwMjO3wVtAWVN1CC0lLXcJD1UQeWLzeZHhquG_GWsYftD-ho5oV5Q==">
+                        <div class="no-access-exit">
+                            <span class="glyphicon glyphicon-log-out"></span>
+                            <button type="submit" class="btn btn-link logout">выход</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-<?php $this->endBody() ?>
+    <?php } ?>
+    <?php $this->endBody() ?>
 </body>
 </html>
 <?php $this->endPage() ?>

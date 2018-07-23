@@ -11,7 +11,7 @@ body {
 }
 
 .wrap > .container {
-    padding: 70px 15px 20px;
+    /*padding: 70px 15px 20px;*/
 }
 
 .footer {
@@ -117,4 +117,129 @@ a.desc:after {
 
 .nav > li > form > button.logout:focus {
     outline: none;
+}
+
+.form-height{
+    height: 95px;
+}
+
+/* TODO меню */
+.menu-exit{
+    background-color: #fff;
+    border: 0px;
+    padding: 2px 20px;
+    width: 100%;
+    text-align: left;
+}
+
+.menu-exit:hover{
+    background-color: #f5f5f5;
+}
+
+/* TODO Страница профиля (user/profile) */
+.user-avatar{
+    height: 100%;
+    width: 100%;
+}
+
+.user-avatar>img{
+     height: 100%;
+     width: 100%;
+ }
+
+.name-other{
+    margin: 20px;
+}
+
+.user-fio {
+    font-size: 40px;
+}
+
+.profile{
+    margin: 50px 0 0 0;
+}
+
+/* TODO админ панель */
+.admin-panel{
+    height: 85px;
+    width: 100%;
+    background-color: #2f4050;
+    border-bottom: 1px solid #bfaaca;
+}
+
+.admin-panel ul{
+    padding: 9px 15px 9px 15px;
+    margin: 0;
+    height: 85px;
+}
+
+.admin-panel ul li{
+    display: inline-block !important;
+    padding: 0px 15px !important;
+}
+
+.admin-panel ul li a{
+    background-size: 60px;
+    width: 80px !important;
+    height: 0 !important;
+    display: block !important;
+    position: relative !important;
+    line-height: 25px !important;
+    text-align: center !important;
+    padding-top: 50px !important;
+    text-transform: uppercase !important;
+    font-size: 10px !important;
+    color: #d3d3d3;
+}
+
+/* TODO окно бана */
+.ban-fon {
+    display: table;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background-color: #f4f7fb;
+}
+
+.ban-contend{
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.ban-text{
+    width: 550px;
+    height: 160px;
+    margin: auto;
+    border: 2px solid rgb(242, 252, 240);
+    border-radius: 20px;
+    box-shadow: rgb(170, 170, 170) 0px 0px 10px 2px;
+    -webkit-box-shadow: rgb(170, 170, 170) 0px 0px 10px 2px;
+}
+
+.no-access-exit{
+    margin: 15px;
+}
+
+.no-access-exit>span {
+    color: #999c9e;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.no-access-exit>button {
+    color: #999c9e;
+    font-size: 20px;
+    padding: 3px;
+}
+
+#userpassport-form_participation_id label{
+    display: block;
+}
+
+.form-update-pic{
+    width:300px;
+}
+
+.form-update-pic img{
+    width:100%;
 }

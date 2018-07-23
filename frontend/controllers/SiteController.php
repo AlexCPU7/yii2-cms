@@ -1,16 +1,46 @@
 <?php
 namespace frontend\controllers;
 
-use app\models\Signup;
-use app\models\login;
 use Yii;
+use yii\base\InvalidParamException;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use common\models\LoginForm;
+use frontend\models\PasswordResetRequestForm;
+use frontend\models\ResetPasswordForm;
+use frontend\models\SignupForm;
 
-/**
- * Site controller
- */
 class SiteController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['logout'],
+                'rules' => [
+                    [
+                        'actions' => ['signup'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
+    }
 
     public function actions()
     {
@@ -18,66 +48,93 @@ class SiteController extends Controller
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
         ];
     }
 
-    public function actionIndex(){
-
+    public function actionIndex()
+    {
         return $this->render('index');
     }
 
-    public function actionSignup(){
+    public function actionLogin()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->redirect('/');
+        }
 
-        $this->checkUser();
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->redirect('/user/profile');
+        } else {
+            $model->password = '';
 
-        $model = new Signup();
+            return $this->render('login', [
+                'model' => $model,
+            ]);
+        }
+    }
 
-        if (isset($_POST['Signup'])){
-            //var_dump($_POST['Signup']);die;
-            $model->attributes = Yii::$app->request->post('Signup');
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
 
-            //проверка правил валидации и запись пользователя в бд
-            if ($model->validate() && $model->signup()){
-                return $this->goHome();
+        return $this->goHome();
+    }
+
+    public function actionSignup()
+    {
+        $model = new SignupForm();
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signup()) {
+                if (Yii::$app->getUser()->login($user)) {
+                    return $this->redirect('/');
+                }
             }
         }
 
         return $this->render('signup', [
-            'model' => $model
+            'model' => $model,
         ]);
     }
 
-    public function actionLogin(){
-
-        $this->checkUser();
-
-        $login_model = new Login();
-
-        if (Yii::$app->request->post('Login')){
-            $login_model->attributes = Yii::$app->request->post('Login');
-
-            //проеверка валидации
-            if ($login_model->validate()){
-                Yii::$app->user->login($login_model->getUser());
+    public function actionRequestPasswordReset()
+    {
+        $model = new PasswordResetRequestForm();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->sendEmail()) {
+                Yii::$app->session->setFlash('success', 'Проверьте свою электронную почту для получения дальнейших инструкций.');
                 return $this->goHome();
+            } else {
+                Yii::$app->session->setFlash('error',
+                    'К сожалению, мы не можем сбросить пароль для предоставлитьенного адреса электронной почты.');
             }
         }
 
-        return $this->render('login', [
-            'login_model' => $login_model
+        return $this->render('requestPasswordResetToken', [
+            'model' => $model,
         ]);
     }
 
-    public function actionLogout(){
-        if(!Yii::$app->user->isGuest){
-            Yii::$app->user->logout();
-            return $this->redirect(['login']);
+    public function actionResetPassword($token)
+    {
+        try {
+            $model = new ResetPasswordForm($token);
+        } catch (InvalidParamException $e) {
+            throw new BadRequestHttpException($e->getMessage());
         }
-    }
 
-    public function checkUser(){
-        if(!Yii::$app->user->isGuest){
-            $this->goHome();
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+            Yii::$app->session->setFlash('success', 'Пароль был успешно изменён.');
+
+            return $this->redirect('/site/login');
         }
+
+        return $this->render('resetPassword', [
+            'model' => $model,
+        ]);
     }
 }

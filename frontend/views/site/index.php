@@ -1,8 +1,12 @@
 <?php
-    use yii\widgets\ActiveForm;
+$this->title = 'Главная страница';
 ?>
+<div class="site-index">
 
-<?php
-    ActiveForm::begin(['class' => 'form-horizontal']);
-?>
-ASDASDASD
+    <h1><?= $this->title ?></h1>
+
+</div>
+
+
+
+

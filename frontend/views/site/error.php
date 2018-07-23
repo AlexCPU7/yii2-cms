@@ -7,11 +7,7 @@
 
 use yii\helpers\Html;
 
-$this->title = $name;
-?>
-<?php
-$a = 1;
-$b = 2;
+$this->title = 'Ошибка #' . $exception->statusCode;
 ?>
 <div class="site-error">
 
@@ -22,10 +18,10 @@ $b = 2;
     </div>
 
     <p>
-        The above error occurred while the Web server was processing your request.
+        Вышеупомянутая ошибка возникла, когда веб-сервер обрабатывал ваш запрос.
     </p>
     <p>
-        Please contact us if you think this is a server error. Thank you.
+        Если вы считаете, что это ошибка сервера, свяжитесь с нами. Спасибо.
     </p>
 
 </div>

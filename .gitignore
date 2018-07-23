@@ -33,3 +33,13 @@ phpunit.phar
 
 # vagrant runtime
 /.vagrant
+
+# подключение к бд
+/common/config/main-local.php
+
+# папка uploads
+/frontend/web/uploads
+
+composer.json
+
+composer.lock
