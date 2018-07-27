@@ -12,7 +12,6 @@ class StartController extends Controller
          * Создаём пользователя
          */
         $user = new User();
-        $user->username = 'admin';
         $user->email = 'admin';
         $user->first_name = 'Админ';
         $user->last_name = 'Админский';
@@ -78,5 +77,7 @@ class StartController extends Controller
          */
         $user_role = Yii::$app->authManager->getRole('admin');
         Yii::$app->authManager->assign($user_role, 1);
+
+        var_dump('Консольная окманда была успешно выполнена');
     }
 }

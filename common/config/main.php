@@ -9,6 +9,10 @@ return [
     'components' => [
         'i18n' => [
             'translations' => [
+                'content' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/modules/content/translations',
+                ],
                 'eav' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@mirocow/eav/messages',

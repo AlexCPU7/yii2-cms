@@ -103,35 +103,16 @@ $menu = new Menu();
                     ],
 
                     [
-                        'label' => 'Магазин',
-                        'icon' => 'fw fa-shopping-cart',
+                        'label' => 'Контент',
+                        'icon' => 'fw fa-list-alt',
                         'url' => '#',
-                        'visible' => $menu->menuShop(),
                         'items' => [
                             [
-                                'label' => 'Категории',
-                                'icon' => 'fw fa-unsorted',
-                                'url' => ['#'],
-                                'visible' => Yii::$app->user->can('can_module_shop_category')
+                                'label' => 'Виды контента',
+                                'icon' => 'fw fa-clone',
+                                'url' => ['/content'],
                             ],
-                            [
-                                'label' => 'Опции категорий',
-                                'icon' => 'fw fa-server',
-                                'url' => ['/shop/category'],
-                                'visible' => Yii::$app->user->can('can_module_shop_options')
-                            ],
-                            [
-                                'label' => 'Стикеры товаров',
-                                'icon' => 'fw fa-bookmark-o',
-                                'url' => ['/shop/stickers'],
-                                'visible' => Yii::$app->user->can('can_module_shop_options')
-                            ],
-                            [
-                                'label' => 'Товары',
-                                'icon' => 'fw fa-send',
-                                'url' => ['/shop/item/category'],
-                                'visible' => Yii::$app->user->can('can_module_shop_item')
-                            ],
+
                         ],
                     ],
 
