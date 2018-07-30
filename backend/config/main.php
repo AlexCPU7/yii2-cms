@@ -81,6 +81,12 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'content/item/<url>' => 'content/item/list',
+                'content/item/<url>/create' => 'content/item/create',
+                'content/item/update/<url>/<id>' => 'content/item/update',
+                'content/item/delete/<url>/<id>' => 'content/item/delete',
+
+                //'content/item/<url>/<id>' => 'content/item/one'
             ],
         ],
     ],

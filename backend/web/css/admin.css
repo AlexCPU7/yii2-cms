@@ -502,3 +502,6 @@ a.desc:after {
     margin-left: 4.5cm;
 }
 
+.nav-tabs-indent{
+    margin: 15px 0;
+}

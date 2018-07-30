@@ -19,7 +19,7 @@ class ContentSearch extends Content
     {
         return [
             [['id', 'type_id', 'user_id', 'active'], 'integer'],
-            [['title', 'sub_title', 'img', 'decsr', 'link', 'title_anons', 'sub_title_anons', 'img_anons', 'decsr_anons', 'link_anons', 'create_tm', 'update_tm'], 'safe'],
+            [['title', 'sub_title', 'img', 'descr', 'link', 'title_anons', 'sub_title_anons', 'img_anons', 'descr_anons', 'link_anons', 'create_tm', 'update_tm'], 'safe'],
         ];
     }
 
@@ -39,11 +39,13 @@ class ContentSearch extends Content
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $contentType = null)
     {
-        $query = Content::find()
-            ->where(['type_id' => $params['type']])
-            ->andWhere(['active' => 1]);
+        $query = Content::find();
+
+        if (!is_null($contentType)){
+            $query->where(['type_id' => $contentType->id]);
+        };
 
         // add conditions that should always apply here
 
@@ -72,12 +74,12 @@ class ContentSearch extends Content
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'sub_title', $this->sub_title])
             ->andFilterWhere(['like', 'img', $this->img])
-            ->andFilterWhere(['like', 'decsr', $this->decsr])
+            ->andFilterWhere(['like', 'descr', $this->descr])
             ->andFilterWhere(['like', 'link', $this->link])
             ->andFilterWhere(['like', 'title_anons', $this->title_anons])
             ->andFilterWhere(['like', 'sub_title_anons', $this->sub_title_anons])
             ->andFilterWhere(['like', 'img_anons', $this->img_anons])
-            ->andFilterWhere(['like', 'decsr_anons', $this->decsr_anons])
+            ->andFilterWhere(['like', 'descr_anons', $this->descr_anons])
             ->andFilterWhere(['like', 'link_anons', $this->link_anons]);
 
         return $dataProvider;

@@ -2,17 +2,19 @@
 
 namespace common\modules\content\backend\controllers;
 
+use common\modules\content\models\ContentType;
 use Yii;
 use common\modules\content\models\Content;
 use common\modules\content\backend\models\ContentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Url;
 
 /**
  * ContentController implements the CRUD actions for Content model.
  */
-class ContentController extends Controller
+class ItemController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -33,7 +35,7 @@ class ContentController extends Controller
      * Lists all Content models.
      * @return mixed
      */
-    public function actionIndex($type)
+    /*public function actionIndex()
     {
         $searchModel = new ContentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -42,19 +44,40 @@ class ContentController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }*/
+
+    public function actionList($url)
+    {
+        $contentType = $this->findContentType($url);
+        $searchModel = new ContentSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $contentType);
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'contentType' => $contentType
+        ]);
     }
+
+
+    /*public function actionOne($url, $id)
+    {
+        return $url;
+    }*/
 
     /**
      * Creates a new Content model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($type)
+    public function actionCreate($url)
     {
+        $contentType = $this->findContentType($url);
         $model = new Content();
+        $model->type_id = $contentType->id;
+        $model->user_id = Yii::$app->user->id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index', 'type' => $type]);
+            return $this->redirect(['/content/item/' . $url]);
         }
 
         return $this->render('create', [
@@ -69,12 +92,12 @@ class ContentController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($url, $id)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['/content/item/' . $url]);
         }
 
         return $this->render('update', [
@@ -89,11 +112,11 @@ class ContentController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($url, $id)
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['/content/item/' . $url]);
     }
 
     /**
@@ -107,6 +130,15 @@ class ContentController extends Controller
     {
         if (($model = Content::findOne($id)) !== null) {
             $model->update_tm = date("Y-m-d H:i:s");
+            return $model;
+        }
+
+        throw new NotFoundHttpException(Yii::t('content', 'The requested page does not exist.'));
+    }
+
+    protected function findContentType($url)
+    {
+        if (($model = ContentType::find()->where(['url' => $url])->one()) !== null) {
             return $model;
         }
 

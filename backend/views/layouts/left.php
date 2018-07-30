@@ -2,10 +2,13 @@
 use \common\models\UserModel;
 use yii\helpers\Url;
 use backend\components\menu\Menu;
+use common\modules\content\models\ContentType;
 
 $user = UserModel::findOne(Yii::$app->user->id);
 
 $menu = new Menu();
+
+$content = ContentType::find()->where(['active' => 1])->all();
 ?>
 
 <aside class="main-sidebar">
@@ -22,104 +25,118 @@ $menu = new Menu();
             </div>
         </div>
 
-        <?= dmstr\widgets\Menu::widget(
-            [
-                'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
-                'items' => [
-                    ['label' => 'Меню', 'options' => ['class' => 'header']],
+        <?php
 
-                    ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
-
-                    [
-                        'label' => 'Настройки сайта',
-                        'icon' => 'fw fa-gears',
-                        'url' => '#',
-                        'visible' => $menu->menuSettingsSite(),
-                        'items' => [
-                            [
-                                'label' => 'Общая информация',
-                                'icon' => 'fw fa-file-o',
-                                'url' => ['/info-site/index'],
-                                'visible' => Yii::$app->user->can('info_site')
-                            ],
-                            [
-                                'label' => 'Расшифроква доступов',
-                                'icon' => 'fw fa-eye',
-                                'url' => ['/rbac/permission'],
-                                'visible' => Yii::$app->user->can('admin_menu_rbac_permission')
-                            ],
-                            [
-                                'label' => 'Роли пользователей',
-                                'icon' => 'fw  fa-key',
-                                'url' => ['/rbac/roles'],
-                                'visible' => Yii::$app->user->can('admin_menu_rbac_roles')
-                            ],
-                            [
-                                'label' => 'Почтовые уведомления',
-                                'icon' => 'fw fa-bullhorn',
-                                'url' => ['/notice/index'],
-                                'visible' => Yii::$app->user->can('settings_add_email_push')
-                            ],
-                            [
-                                'label' => 'Пользователи',
-                                'icon' => 'fw fa-user',
-                                'url' => ['/rbac/users'],
-                                'visible' => Yii::$app->user->can('admin_menu_rbac_users')
-                            ],
-                            [
-                                'label' => 'Some tools',
-                                'icon' => 'fw fa-bug',
-                                'url' => '#',
-                                'visible' => Yii::$app->user->can('can_some_tools'),
-                                'items' => [
-                                    [
-                                        'label' => 'Gii',
-                                        'icon' => 'file-code-o',
-                                        'url' => ['/gii'],
-                                    ],
-                                    [
-                                        'label' => 'Debug',
-                                        'icon' => 'dashboard',
-                                        'url' => ['/debug'],
-                                    ],
-                                ]
-                            ],
-                        ],
-                    ],
-
-                    [
-                        'label' => 'Пользователи',
-                        'icon' => 'fw fa-male',
-                        'url' => '#',
-                        'visible' => $menu->menuUsers(),
-                        'items' => [
-                            [
-                                'label' => 'Клиенты',
-                                'icon' => 'fw fa-user',
-                                'url' => ['/users'],
-                                'visible' => Yii::$app->user->can('users_clients')
-                            ],
-                        ],
-                    ],
-
-                    [
-                        'label' => 'Контент',
-                        'icon' => 'fw fa-list-alt',
-                        'url' => '#',
-                        'items' => [
-                            [
-                                'label' => 'Виды контента',
-                                'icon' => 'fw fa-clone',
-                                'url' => ['/content'],
-                            ],
-
-                        ],
-                    ],
-
+        $contentMenu = [
+            'label' => 'Контент',
+            'icon' => 'fw fa-list-alt',
+            'url' => '#',
+            'items' => [
+                [
+                    'label' => 'Виды контента',
+                    'icon' => 'fw fa-clone',
+                    'url' => ['/content/type'],
                 ],
-            ]
-        ) ?>
+            ],
+        ];
 
+        foreach ($content as $item){
+            $contentMenu['items'][] = [
+                'label' => $item->title,
+                'icon' => 'fw fa-clone',
+                'url' => ['/content/item/' . $item->url],
+            ];
+        }
+
+        $menuArr = [
+            'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
+            'items' => [
+                ['label' => 'Меню', 'options' => ['class' => 'header']],
+
+                ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
+
+                [
+                    'label' => 'Настройки сайта',
+                    'icon' => 'fw fa-gears',
+                    'url' => '#',
+                    'visible' => $menu->menuSettingsSite(),
+                    'items' => [
+                        [
+                            'label' => 'Общая информация',
+                            'icon' => 'fw fa-file-o',
+                            'url' => ['/info-site/index'],
+                            'visible' => Yii::$app->user->can('info_site')
+                        ],
+                        [
+                            'label' => 'Расшифроква доступов',
+                            'icon' => 'fw fa-eye',
+                            'url' => ['/rbac/permission'],
+                            'visible' => Yii::$app->user->can('admin_menu_rbac_permission')
+                        ],
+                        [
+                            'label' => 'Роли пользователей',
+                            'icon' => 'fw  fa-key',
+                            'url' => ['/rbac/roles'],
+                            'visible' => Yii::$app->user->can('admin_menu_rbac_roles')
+                        ],
+                        [
+                            'label' => 'Почтовые уведомления',
+                            'icon' => 'fw fa-bullhorn',
+                            'url' => ['/notice/index'],
+                            'visible' => Yii::$app->user->can('settings_add_email_push')
+                        ],
+                        [
+                            'label' => 'Пользователи',
+                            'icon' => 'fw fa-user',
+                            'url' => ['/rbac/users'],
+                            'visible' => Yii::$app->user->can('admin_menu_rbac_users')
+                        ],
+                        [
+                            'label' => 'Some tools',
+                            'icon' => 'fw fa-bug',
+                            'url' => '#',
+                            'visible' => Yii::$app->user->can('can_some_tools'),
+                            'items' => [
+                                [
+                                    'label' => 'Gii',
+                                    'icon' => 'file-code-o',
+                                    'url' => ['/gii'],
+                                ],
+                                [
+                                    'label' => 'Debug',
+                                    'icon' => 'dashboard',
+                                    'url' => ['/debug'],
+                                ],
+                            ]
+                        ],
+                    ],
+                ],
+
+                [
+                    'label' => 'Пользователи',
+                    'icon' => 'fw fa-male',
+                    'url' => '#',
+                    'visible' => $menu->menuUsers(),
+                    'items' => [
+                        [
+                            'label' => 'Клиенты',
+                            'icon' => 'fw fa-user',
+                            'url' => ['/users'],
+                            'visible' => Yii::$app->user->can('users_clients')
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $menuArr['items'][] = $contentMenu;
+
+        ?>
+
+        <?= dmstr\widgets\Menu::widget($menuArr) ?>
+        <?php
+        $t = 12;
+        ?>
     </section>
 
 </aside>

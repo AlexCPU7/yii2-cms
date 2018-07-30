@@ -15,12 +15,12 @@ use common\models\UserModel as User;
  * @property string $title
  * @property string $sub_title
  * @property string $img
- * @property string $decsr
+ * @property string $descr
  * @property string $link
  * @property string $title_anons
  * @property string $sub_title_anons
  * @property string $img_anons
- * @property string $decsr_anons
+ * @property string $descr_anons
  * @property string $link_anons
  * @property string $create_tm
  * @property string $update_tm
@@ -48,7 +48,7 @@ class Content extends \yii\db\ActiveRecord
             [['update_tm'], 'default', 'value'=> date("Y-m-d H:i:s")],
             [['type_id', 'user_id', 'create_tm', 'update_tm'], 'required'],
             [['type_id', 'user_id', 'active'], 'integer'],
-            [['decsr', 'decsr_anons'], 'string'],
+            [['descr', 'descr_anons'], 'string'],
             [['create_tm', 'update_tm'], 'safe'],
             [['title', 'sub_title', 'img', 'link', 'title_anons', 'sub_title_anons', 'img_anons', 'link_anons'], 'string', 'max' => 255],
             //[['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => ContentType::className(), 'targetAttribute' => ['type_id' => 'id']],
@@ -69,12 +69,12 @@ class Content extends \yii\db\ActiveRecord
             'title' => Yii::t('content', 'Title'),
             'sub_title' => Yii::t('content', 'Sub Title'),
             'img' => Yii::t('content', 'Img'),
-            'decsr' => Yii::t('content', 'Decsr'),
+            'descr' => Yii::t('content', 'descr'),
             'link' => Yii::t('content', 'Link'),
             'title_anons' => Yii::t('content', 'Title Anons'),
             'sub_title_anons' => Yii::t('content', 'Sub Title Anons'),
             'img_anons' => Yii::t('content', 'Img Anons'),
-            'decsr_anons' => Yii::t('content', 'Decsr Anons'),
+            'descr_anons' => Yii::t('content', 'descr Anons'),
             'link_anons' => Yii::t('content', 'Link Anons'),
             'create_tm' => Yii::t('content', 'Create Tm'),
             'update_tm' => Yii::t('content', 'Update Tm'),
