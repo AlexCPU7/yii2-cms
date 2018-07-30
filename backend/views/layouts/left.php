@@ -34,7 +34,7 @@ $content = ContentType::find()->where(['active' => 1])->all();
             'items' => [
                 [
                     'label' => 'Виды контента',
-                    'icon' => 'fw fa-clone',
+                    'icon' => 'fw fa-clipboard',
                     'url' => ['/content/type'],
                 ],
             ],

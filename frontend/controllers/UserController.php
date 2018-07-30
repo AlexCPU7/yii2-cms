@@ -90,6 +90,11 @@ class UserController extends DefaultFrontendController{
         ]);
     }
 
+    public function actionSettingsPassword(){
+        /* ДЕЛАТЬ */
+        return $this->render('settings-password');
+    }
+
     /**
      * Изменить пароль
      */
