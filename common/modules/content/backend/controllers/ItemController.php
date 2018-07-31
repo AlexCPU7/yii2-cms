@@ -2,6 +2,7 @@
 
 namespace common\modules\content\backend\controllers;
 
+use common\components\Img;
 use common\modules\content\models\ContentType;
 use Yii;
 use common\modules\content\models\Content;
@@ -9,13 +10,16 @@ use common\modules\content\backend\models\ContentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 use yii\helpers\Url;
+use yii\helpers\FileHelper;
 
 /**
  * ContentController implements the CRUD actions for Content model.
  */
 class ItemController extends Controller
 {
+    const file_name_length = 8;
     /**
      * {@inheritdoc}
      */
@@ -31,21 +35,6 @@ class ItemController extends Controller
         ];
     }
 
-    /**
-     * Lists all Content models.
-     * @return mixed
-     */
-    /*public function actionIndex()
-    {
-        $searchModel = new ContentSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }*/
-
     public function actionList($url)
     {
         $contentType = $this->findContentType($url);
@@ -57,12 +46,6 @@ class ItemController extends Controller
             'contentType' => $contentType
         ]);
     }
-
-
-    /*public function actionOne($url, $id)
-    {
-        return $url;
-    }*/
 
     /**
      * Creates a new Content model.
@@ -82,6 +65,7 @@ class ItemController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'contentType' => $contentType
         ]);
     }
 
@@ -95,13 +79,25 @@ class ItemController extends Controller
     public function actionUpdate($url, $id)
     {
         $model = $this->findModel($id);
+        $contentType = $this->findContentType($url);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            $img = new Img();
+            $path = '/uploads/content/';
+
+            $attribute = 'img';
+            $img->Save($model, $path, $attribute);
+
+            $attribute = 'img_anons';
+            $img->Save($model, $path, $attribute);
+
             return $this->redirect(['/content/item/' . $url]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'contentType' => $contentType
         ]);
     }
 

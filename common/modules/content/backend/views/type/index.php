@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\widgets\Breadcrumbs;
+
 /* @var $this yii\web\View */
 /* @var $searchModel common\modules\content\backend\models\ContentTypeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -14,6 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php Pjax::begin(); ?>
+
+    <?= Breadcrumbs::widget(['links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [], ]); ?>
 
     <p>
         <?= Html::a(Yii::t('content', 'Create Content Type'), ['create'], ['class' => 'btn btn-success']) ?>

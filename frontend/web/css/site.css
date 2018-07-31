@@ -243,3 +243,38 @@ a.desc:after {
 .form-update-pic img{
     width:100%;
 }
+
+
+/* TODO settings users menu */
+
+.menu-settings{
+    border: 1px solid #dbc9ff;
+    border-radius: 5px;
+    background: #fbfbfb;
+}
+
+.menu-settings-ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu-settings-ul li{
+    padding: 10px 12px 10px 12px;
+    border-top: 1px dashed #f8c9ff;
+}
+
+.menu-settings-not-bor{
+    border-top: 0 !important;
+}
+
+.menu-settings-item:hover{
+    color: #5e6ff3;
+    text-decoration: none;
+}
+
+.menu-settings-item{
+    color: #2d4150;
+    font-weight: 600;
+    font-size: 12pt;
+}

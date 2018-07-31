@@ -30,6 +30,7 @@ use common\models\UserModel as User;
  */
 class Content extends \yii\db\ActiveRecord
 {
+    public $imgFile;
     /**
      * {@inheritdoc}
      */

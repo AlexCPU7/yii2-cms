@@ -134,9 +134,7 @@ $content = ContentType::find()->where(['active' => 1])->all();
         ?>
 
         <?= dmstr\widgets\Menu::widget($menuArr) ?>
-        <?php
-        $t = 12;
-        ?>
+
     </section>
 
 </aside>

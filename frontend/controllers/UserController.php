@@ -16,6 +16,7 @@ use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 use Yii;
 use common\models\UserModel;
+use common\models\Notice;
 
 class UserController extends DefaultFrontendController{
 
@@ -52,7 +53,6 @@ class UserController extends DefaultFrontendController{
     public function actionSettings(){
 
         $model = $this->findModel(Yii::$app->user->id);
-        $updatePas = new UpdatePassword();
 
         $avatar = UserAvatar::findOne(['user_id' => Yii::$app->user->id]);
 
@@ -86,13 +86,28 @@ class UserController extends DefaultFrontendController{
         return $this->render('settings', [
             'model' => $model,
             'avatar' => $avatar,
+        ]);
+    }
+
+    public function actionSettingsPassword()
+    {
+        $updatePas = new UpdatePassword();
+
+        return $this->render('settings-password', [
             'updatePas' => $updatePas
         ]);
     }
 
-    public function actionSettingsPassword(){
-        /* ДЕЛАТЬ */
-        return $this->render('settings-password');
+    public function actionSettingsMail()
+    {
+        $model = $this->findModel(Yii::$app->user->id);
+
+        $notice = Notice::find()->select(['title', 'id'])->indexBy('id')->column();
+
+        return $this->render('settings-mail', [
+            'model' => $model,
+            'notice' => $notice
+        ]);
     }
 
     /**
@@ -106,7 +121,7 @@ class UserController extends DefaultFrontendController{
             return $this->redirect('profile');
         }else{
             Yii::$app->session->setFlash('error','Пароль не был изменён, вы ввели неправильный пароль.');
-            return $this->redirect('settings');
+            return $this->redirect('settings-password');
         }
     }
 

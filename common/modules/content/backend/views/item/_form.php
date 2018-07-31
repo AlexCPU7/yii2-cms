@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use mihaildev\ckeditor\CKEditor;
 
 /* @var $this yii\web\View */
 /* @var $model common\modules\content\models\Content */
@@ -26,9 +27,21 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'sub_title')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'img')->textInput(['maxlength' => true]) ?>
+                <?php if (!$model->isNewRecord){ ?>
+                    <?= Html::label('Текущая картинка') ?>
+                    <div class="form-update-pic">
+                        <?= Html::img($model->img) ?>
+                    </div>
+                <?php } ?>
 
-                <?= $form->field($model, 'descr')->textarea(['rows' => 6]) ?>
+                <?= $form->field($model, 'img')->fileInput()?>
+
+                <?= $form->field($model, 'descr')->widget(CKEditor::className(),[
+                    'editorOptions' => [
+                        'preset' => 'full', //разработанны стандартные настройки basic, standard, full данную возможность не обязательно использовать
+                        'inline' => false, //по умолчанию false
+                    ],
+                ]); ?>
 
                 <?= $form->field($model, 'link')->textInput(['maxlength' => true]) ?>
             </div>
@@ -39,9 +52,21 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'sub_title_anons')->textInput(['maxlength' => true]) ?>
 
+                <?php if (!$model->isNewRecord){ ?>
+                    <?= Html::label('Текущая картинка') ?>
+                    <div class="form-update-pic">
+                        <?= Html::img($model->img_anons) ?>
+                    </div>
+                <?php } ?>
+
                 <?= $form->field($model, 'img_anons')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'descr_anons')->textarea(['rows' => 6]) ?>
+                <?= $form->field($model, 'descr')->widget(CKEditor::className(),[
+                    'editorOptions' => [
+                        'preset' => 'full', //разработанны стандартные настройки basic, standard, full данную возможность не обязательно использовать
+                        'inline' => false, //по умолчанию false
+                    ],
+                ]); ?>
 
                 <?= $form->field($model, 'link_anons')->textInput(['maxlength' => true]) ?>
             </div>

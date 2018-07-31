@@ -34,7 +34,9 @@ return [
     /* content */
     'Sort' => 'Сортировка',
     'Content Types' => 'Тип контента',
-    'Create Content' => 'Добавить'
+    'Create Content' => 'Добавить',
+    'Update Content Type: {nameAttribute}' => 'Изменить тип контента: {nameAttribute}',
+    'Update: {nameAttribute}' => 'Изменить: {nameAttribute}'
 
 
 ];
